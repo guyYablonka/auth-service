@@ -14,10 +14,16 @@ const start = async () => {
   }
 
   try {
-    await mongoose.connect("mongodb://localhost:27017");
-    console.log("connected to mongoDB");
+    await mongoose.connect("mongodb://auth-mongo-srv:27017");
+    console.log("connected to mongoDB k8s pod");
   } catch (err) {
-    console.log(err);
+    console.log("mongoDB k8s pod is down, connecting fallback to localhost DB");
+    try {
+      await mongoose.connect("mongodb://localhost:27017");
+      console.log("connected to local mongoDB");
+    } catch (err) {
+      console.log(err);
+    }
   }
 };
 
