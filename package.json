@@ -7,6 +7,8 @@
     "start": "ts-node-dev src/index.ts",
     "test": "jest --watchAll --no-cache",
     "mongo": "mongod --dbpath ./data/db",
+    "apply:db": "kubectl apply -f ./k8s/auth-mongo-depl.yaml",
+    "rollout:db": "kubectl rollout restart deployment auth-mongo-depl",
     "apply": "kubectl apply -f ./k8s/auth-depl.yaml",
     "rollout": "kubectl rollout restart deployment auth-depl",
     "docker:build": "docker build -t guyyyablonka123/auth-service . && docker push guyyyablonka123/auth-service",
