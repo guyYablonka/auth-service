@@ -2,6 +2,7 @@ import request from "supertest";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { app } from "../app";
+import { env } from "../config/config";
 
 declare global {
   var signin: () => Promise<string[]>;
@@ -9,7 +10,7 @@ declare global {
 
 let mongo: any;
 beforeAll(async () => {
-  process.env.JWT_KEY = "asdf";
+  env.JWT_KEY = "asdf";
 
   mongo = await MongoMemoryServer.create();
   const mongoUri = await mongo.getUri();

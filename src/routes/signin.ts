@@ -6,6 +6,7 @@ import Password from "../services/password";
 import { BadRequestError } from "../errors/bad-request-error";
 import { validationRequest } from "../middlewares/validate-request";
 import { User } from "../models/user";
+import { env } from "../config/config";
 const router = express.Router();
 
 router.post(
@@ -41,11 +42,15 @@ router.post(
         id: existingUser.id,
         email: existingUser.email,
       },
-      process.env.JWT_KEY!
+      env.JWT_KEY!
     );
 
     // Store it on session object
-    req.session = { jwt: userJwt };
+    if (env.NODE_ENV !== "local") {
+      req.session = { jwt: userJwt };
+    } else {
+      res.cookie("session", userJwt, { httpOnly: true });
+    }
 
     res.status(200).send(existingUser);
   }

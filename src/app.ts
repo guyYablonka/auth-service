@@ -12,7 +12,8 @@ import { signupRouter } from "./routes/signup";
 import { errorHandler } from "./middlewares/error-handler";
 import { NotFoundError } from "./errors/not-found-error";
 import { oauthRouter } from "./routes/oauth";
-// import "./config/passport-setup";
+import "./config/passport-setup";
+import { env } from "./config/config";
 
 const app = express();
 app.set("trust proxy", true);
@@ -20,18 +21,18 @@ app.use(json());
 app.use(
   cookieSession({
     signed: false,
-    secure: process.env.NODE_ENV !== "test",
+    secure: env.NODE_ENV !== "test",
   })
 );
 
 app.use(cors());
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(currentUserRouter);
 app.use(signinRouter);
 app.use(signoutRouter);
 app.use(signupRouter);
-// app.use(oauthRouter);
+app.use(oauthRouter);
 
 app.all("*", async (req, res) => {
   throw new NotFoundError();

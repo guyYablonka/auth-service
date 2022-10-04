@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import { validationRequest } from "../middlewares/validate-request";
 import { BadRequestError } from "../errors/bad-request-error";
 import { User } from "../models/user";
+import { env } from "../config/config";
 
 const router = express.Router();
 
@@ -35,11 +36,15 @@ router.post(
         id: user.id,
         email: user.email,
       },
-      process.env.JWT_KEY!
+      env.JWT_KEY!
     );
 
     // Store it on session object
-    req.session = { jwt: userJwt };
+    if (env.NODE_ENV !== "local") {
+      req.session = { jwt: userJwt };
+    } else {
+      res.cookie("session", userJwt, { httpOnly: true });
+    }
 
     res.status(201).send(user);
   }

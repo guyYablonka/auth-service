@@ -15,6 +15,9 @@ spec:
       containers:
         - name: auth
           image: guyyyablonka123/auth-service
+          env:
+            - name: MONGO_URL
+              value: "mongodb://auth-mongo-srv:27017"
 ---
 apiVersion: v1
 kind: Service

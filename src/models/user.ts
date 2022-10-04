@@ -8,7 +8,7 @@ interface UserAttrs {
   password?: string;
   username?: string;
   displayName?: string;
-  profileUrl?: string;
+  picture?: string;
 }
 
 // An interface that describes the properties
@@ -20,11 +20,12 @@ interface UserModel extends mongoose.Model<UserDoc> {
 // An inbterface that describes the properties
 // that a User Document has
 export interface UserDoc extends mongoose.Document {
+  id: string;
   email: string;
   password?: string;
   username?: string;
   displayName?: string;
-  profileUrl?: string;
+  picture?: string;
 }
 
 const userSchema = new mongoose.Schema(
@@ -45,7 +46,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    profileUrl: {
+    picture: {
       type: String,
       required: false,
     },

@@ -3,50 +3,63 @@ import googleStrategy from "passport-google-oauth20";
 import { BadRequestError } from "../errors/bad-request-error";
 
 import { User } from "../models/user";
+import { env } from "./config";
+
+declare global {
+  namespace Express {
+    interface User {
+      id?: string;
+    }
+  }
+}
 
 const GoogleStrategy = googleStrategy.Strategy;
 
-// passport.serializeUser((user, done) => {
-//   done(null, user);
-// });
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
 
-// passport.deserializeUser((id, done) => {
-//   User.findById(id).then((user) => {
-//     done(null, user);
-//   });
-// });
+passport.deserializeUser((id, done) => {
+  User.findById(id).then((user) => {
+    done(null, user);
+  });
+});
 
 passport.use(
   new GoogleStrategy(
     {
       callbackURL: "/auth/google/callback",
-      clientID: process.env.CLIENT_ID!,
-      clientSecret: process.env.CLIENT_SECRET!,
+      clientID: env.CLIENT_ID!,
+      clientSecret: env.CLIENT_SECRET!,
     },
     (accessToken, refreshToken, profile, done) => {
-      const { username, displayName, emails, profileUrl } = profile;
-      console.log(profile);
-      // if (emails?.length === 0) {
-      //   throw new BadRequestError("email must be provided");
-      // }
+      const { displayName, _json } = profile;
+      const { sub: username, name, picture, email } = _json;
+      console.log("passport use", {
+        username,
+        name,
+        picture,
+        email,
+        displayName,
+      });
 
-      // User.findOne({ username }).then((currUser) => {
-      //   if (currUser) {
-      //     done(null, currUser);
-      //   } else {
-      //     const user = User.build({
-      //       username,
-      //       displayName,
-      //       email: emails![0].value,
-      //       profileUrl,
-      //     });
+      User.findOne({ email }).then((currentUser) => {
+        if (currentUser) {
+          console.log("user signin with user: ", currentUser);
+          done(null, currentUser);
+        } else {
+          if (!email) {
+            throw new BadRequestError("email must be provided!");
+          }
 
-      //     user.save().then((newUser) => {
-      //       console.log("new user created: ", newUser);
-      //       done(null, newUser);
-      //     });
-      //   }
-      // });
+          const user = User.build({ username, displayName, email, picture });
+
+          user.save().then((newUser) => {
+            console.log("new user created: ", newUser);
+            done(null, newUser);
+          });
+        }
+      });
     }
   )
 );
