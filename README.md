@@ -18,14 +18,14 @@ all sign up/in routes store jwt of the user in the browser cookies,
 so if you want to use the cookies feature you have to run you're service
 on k8s cluster with ingress-nginx plugin
 
-# run locally
+## run locally
 
 to be continued
 
-# run locally with k8s and ingress-nginx
+## run locally with k8s and ingress-nginx
 
 to be continued
 
-# developer scripts for comfort experience
+## developer scripts for comfort experience
 
 to be continued
