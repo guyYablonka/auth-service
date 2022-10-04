@@ -1,6 +1,6 @@
 import passport from "passport";
 import googleStrategy from "passport-google-oauth20";
-import { BadRequestError } from "../errors/bad-request-error";
+import { BadRequestError } from "@yablonka-services/err-and-middle";
 
 import { User } from "../models/user";
 import { env } from "./config";

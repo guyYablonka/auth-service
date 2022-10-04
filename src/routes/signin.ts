@@ -3,8 +3,10 @@ import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 
 import Password from "../services/password";
-import { BadRequestError } from "../errors/bad-request-error";
-import { validationRequest } from "../middlewares/validate-request";
+import {
+  BadRequestError,
+  validationRequest,
+} from "@yablonka-services/err-and-middle";
 import { User } from "../models/user";
 import { env } from "../config/config";
 const router = express.Router();

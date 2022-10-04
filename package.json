@@ -27,6 +27,7 @@
   "dependencies": {
     "@types/cookie-session": "^2.0.44",
     "@types/jsonwebtoken": "^8.5.9",
+    "@yablonka-services/err-and-middle": "^1.0.0",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
