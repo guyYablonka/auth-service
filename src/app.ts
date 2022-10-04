@@ -12,8 +12,8 @@ import { signupRouter } from "./routes/signup";
 import { errorHandler } from "./middlewares/error-handler";
 import { NotFoundError } from "./errors/not-found-error";
 import { oauthRouter } from "./routes/oauth";
-import "./config/passport-setup";
 import { env } from "./config/config";
+import "./config/passport-setup";
 
 const app = express();
 app.set("trust proxy", true);

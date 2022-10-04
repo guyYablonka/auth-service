@@ -29,10 +29,10 @@ passport.use(
   new GoogleStrategy(
     {
       callbackURL: "/auth/google/callback",
-      clientID: env.CLIENT_ID!,
-      clientSecret: env.CLIENT_SECRET!,
+      clientID: env.CLIENT_ID,
+      clientSecret: env.CLIENT_SECRET,
     },
-    (accessToken, refreshToken, profile, done) => {
+    (_accessToken, _refreshToken, profile, done) => {
       const { displayName, _json } = profile;
       const { sub: username, name, picture, email } = _json;
       console.log("passport use", {

@@ -6,8 +6,8 @@ import { env } from "./config/config";
 import { app } from "./app";
 
 const start = async () => {
-  if (!env.JWT_KEY || !env.CLIENT_ID || !env.CLIENT_SECRET) {
-    throw new Error("environment variable must be defined");
+  if (!env.JWT_KEY) {
+    throw new Error("JWT_KEY variable must be defined");
   }
 
   try {
