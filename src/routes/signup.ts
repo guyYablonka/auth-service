@@ -31,6 +31,7 @@ router.post(
 
     const user = User.build({ email, password });
     await user.save();
+    console.log(`user ${email} has been created.`);
 
     // Generate JWT
     const userJwt = jwt.sign(
@@ -42,11 +43,8 @@ router.post(
     );
 
     // Store it on session object
-    if (env.NODE_ENV !== "local") {
-      req.session = { jwt: userJwt };
-    } else {
-      res.cookie("session", userJwt, { httpOnly: true });
-    }
+    req.session!.jwt = userJwt;
+    console.log(`cookies of ${email} has been set.`);
 
     res.status(201).send(user);
   }

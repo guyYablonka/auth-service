@@ -1,7 +1,7 @@
 import express from "express";
+import session from "express-session";
 import "express-async-errors";
 import { json } from "body-parser";
-import cookieSession from "cookie-session";
 import passport from "passport";
 import cors from "cors";
 
@@ -15,16 +15,23 @@ import { env } from "./config/config";
 import "./config/passport-setup";
 
 const app = express();
-app.set("trust proxy", true);
+
+app.set("trust proxy", 1);
 app.use(json());
+app.use(cors({ origin: env.CLIENT_URL, credentials: true }));
 app.use(
-  cookieSession({
-    signed: false,
-    secure: env.NODE_ENV !== "test",
+  session({
+    resave: false,
+    saveUninitialized: false,
+    secret: "session",
+    cookie: {
+      maxAge: 1000 * 60 * 60,
+      sameSite: env.NODE_ENV === "production" ? "none" : "lax",
+      secure: env.NODE_ENV === "production" ? true : false,
+    },
   })
 );
 
-app.use(cors());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(currentUserRouter);

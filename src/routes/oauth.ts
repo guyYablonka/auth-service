@@ -25,11 +25,7 @@ router.get(
       env.JWT_KEY!
     );
 
-    if (env.NODE_ENV !== "local") {
-      req.session = { jwt: userJwt };
-    } else {
-      res.cookie("session", userJwt, { httpOnly: true });
-    }
+    req.session!.jwt = userJwt;
     res.status(200).send(req.user);
   }
 );

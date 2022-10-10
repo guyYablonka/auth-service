@@ -9,6 +9,7 @@ import {
 } from "@yablonka-services/err-and-middle";
 import { User } from "../models/user";
 import { env } from "../config/config";
+
 const router = express.Router();
 
 router.post(
@@ -38,6 +39,8 @@ router.post(
       throw new BadRequestError("Invalid credentials");
     }
 
+    console.log(`user ${email} has logged in.`);
+
     // Generate JWT
     const userJwt = jwt.sign(
       {
@@ -48,11 +51,8 @@ router.post(
     );
 
     // Store it on session object
-    if (env.NODE_ENV !== "local") {
-      req.session = { jwt: userJwt };
-    } else {
-      res.cookie("session", userJwt, { httpOnly: true });
-    }
+    req.session!.jwt = userJwt;
+    console.log(`user ${email} has been set.`);
 
     res.status(200).send(existingUser);
   }
