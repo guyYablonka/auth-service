@@ -2,21 +2,20 @@ import express from "express";
 import session from "express-session";
 import "express-async-errors";
 import { json } from "body-parser";
-import passport from "passport";
 import cors from "cors";
 
+import { errorHandler, NotFoundError } from "@yablonka-services/err-and-middle";
+import { env } from "./config/config";
+import "./config/passport-setup";
 import { currentUserRouter } from "./routes/current-user";
 import { signinRouter } from "./routes/signin";
 import { signoutRouter } from "./routes/signout";
 import { signupRouter } from "./routes/signup";
+import passport from "passport";
 import { oauthRouter } from "./routes/oauth";
-import { errorHandler, NotFoundError } from "@yablonka-services/err-and-middle";
-import { env } from "./config/config";
-import "./config/passport-setup";
 
 const app = express();
 
-app.set("trust proxy", 1);
 app.use(json());
 app.use(cors({ origin: env.CLIENT_URL, credentials: true }));
 app.use(
