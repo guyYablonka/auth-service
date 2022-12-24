@@ -44,6 +44,7 @@ router.post(
 
     // Store it on session object
     req.session!.jwt = userJwt;
+    res.cookie("session", userJwt, { httpOnly: true });
     console.log(`cookies of ${email} has been set.`);
 
     res.status(201).send(user);

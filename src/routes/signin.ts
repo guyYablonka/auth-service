@@ -53,6 +53,7 @@ router.post(
     // Store it on session object
     req.session!.jwt = userJwt;
     console.log(`user ${email} has been set.`);
+    res.cookie("session", userJwt, { httpOnly: true });
 
     res.status(200).send(existingUser);
   }
